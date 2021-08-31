@@ -928,6 +928,18 @@ void ItemUseOutOfBattle_EscapeRope(u8 taskId)
         DisplayDadsAdviceCannotUseItemMessage(taskId, gTasks[taskId].tUsingRegisteredKeyItem);
     }
 }
+void ItemUseOutOfBattle_ReviveNuzlocke(u8 taskId)
+{
+    if (CanUseDigOrEscapeRopeOnCurMap() == TRUE)
+    {
+        sItemUseOnFieldCB = ItemUseOnFieldCB_EscapeRope;
+        SetUpItemUseOnFieldCallback(taskId);
+    }
+    else
+    {
+        DisplayCannotUseItemMessage(taskId, gTasks[taskId].tUsingRegisteredKeyItem, gText_ReviveNuzlocke);
+    }
+}
 
 void ItemUseOutOfBattle_EvolutionStone(u8 taskId)
 {

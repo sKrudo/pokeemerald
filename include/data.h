@@ -50,7 +50,6 @@ struct TrainerMonItemCustomMoves
     u16 heldItem;
     u16 moves[MAX_MON_MOVES];
 };
-
 union TrainerMonPtr
 {
     const struct TrainerMonNoItemDefaultMoves *NoItemDefaultMoves;

@@ -10077,6 +10077,9 @@ static void Cmd_trygivecaughtmonnick(void)
         BattleCreateYesNoCursorAt(0);
         break;
     case 1:
+    gBattleCommunication[MULTIUSE_STATE]++;
+    BeginFastPaletteFade(3);
+    break;
         if (JOY_NEW(DPAD_UP) && gBattleCommunication[CURSOR_POSITION] != 0)
         {
             PlaySE(SE_SELECT);
