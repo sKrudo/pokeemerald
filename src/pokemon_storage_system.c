@@ -5944,6 +5944,9 @@ static void PlaceMon(void) {
         case CURSOR_AREA_IN_PARTY:
             if (sStorage->movingMon.box.hasDied == 1) {
                 PrintMessage(MSG_BOX_IS_FULL);
+//                SetPokeStorageTask(Task_OnBPressed);
+                SetPlacedMonData(sMovingMonOrigBoxId, sMovingMonOrigBoxPos);
+                SetPlacedMonSprite(sMovingMonOrigBoxId, sMovingMonOrigBoxPos);
                 break;
             }
 
@@ -6088,16 +6091,16 @@ struct {
     u16 move;
 } static const sRestrictedReleaseMoves[] =
         {
-                {MAP_GROUPS_COUNT, 0,                                                                        MOVE_SURF},
-                {MAP_GROUPS_COUNT, 0,                                                                        MOVE_DIVE},
+                {MAP_GROUPS_COUNT, 0,                                                                      MOVE_SURF},
+                {MAP_GROUPS_COUNT, 0,                                                                      MOVE_DIVE},
                 {MAP_GROUP(
-                         EVER_GRANDE_CITY_POKEMON_LEAGUE_1F),   MAP_NUM(EVER_GRANDE_CITY_POKEMON_LEAGUE_1F), MOVE_STRENGTH},
+                         EVER_GRANDE_CITY_POKEMON_LEAGUE_1F), MAP_NUM(EVER_GRANDE_CITY_POKEMON_LEAGUE_1F), MOVE_STRENGTH},
                 {MAP_GROUP(
-                         EVER_GRANDE_CITY_POKEMON_LEAGUE_1F),   MAP_NUM(EVER_GRANDE_CITY_POKEMON_LEAGUE_1F), MOVE_ROCK_SMASH},
+                         EVER_GRANDE_CITY_POKEMON_LEAGUE_1F), MAP_NUM(EVER_GRANDE_CITY_POKEMON_LEAGUE_1F), MOVE_ROCK_SMASH},
                 {MAP_GROUP(
-                         EVER_GRANDE_CITY_POKEMON_LEAGUE_2F),   MAP_NUM(EVER_GRANDE_CITY_POKEMON_LEAGUE_2F), MOVE_STRENGTH},
+                         EVER_GRANDE_CITY_POKEMON_LEAGUE_2F), MAP_NUM(EVER_GRANDE_CITY_POKEMON_LEAGUE_2F), MOVE_STRENGTH},
                 {MAP_GROUP(
-                         EVER_GRANDE_CITY_POKEMON_LEAGUE_2F),   MAP_NUM(EVER_GRANDE_CITY_POKEMON_LEAGUE_2F), MOVE_ROCK_SMASH},
+                         EVER_GRANDE_CITY_POKEMON_LEAGUE_2F), MAP_NUM(EVER_GRANDE_CITY_POKEMON_LEAGUE_2F), MOVE_ROCK_SMASH},
         };
 
 static void GetRestrictedReleaseMoves(u16 *moves) {
