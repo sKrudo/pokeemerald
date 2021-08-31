@@ -46,6 +46,7 @@
 #include "constants/maps.h"
 #include "constants/trainers.h"
 #include "constants/trainer_hill.h"
+#include "pokemon_storage_system.h"
 
 enum {
     TRAINER_PARAM_LOAD_VAL_8BIT,
@@ -1311,20 +1312,45 @@ void BattleSetup_StartTrainerBattle(void) {
 }
 
 static void CB2_EndTrainerBattle(void) {
-    u32 level, died;
+    u32 level, died, species;
+    int i;
     level = 69;
     died = 1;
+    i = 0;
     if (gTrainerBattleOpponent_A == TRAINER_SECRET_BASE) {
         SetMainCallback2(CB2_ReturnToFieldContinueScriptPlayMapMusic);
     } else if (IsPlayerDefeated(gBattleOutcome) == TRUE) {
         if (InBattlePyramid() || InTrainerHillChallenge())
             SetMainCallback2(CB2_ReturnToFieldContinueScriptPlayMapMusic);
-        else
+        else {
+            for (i = 0; i < PARTY_SIZE; i++) {
+                species = GetMonData(&gPlayerParty[i], MON_DATA_SPECIES2);
+                if (species != SPECIES_EGG && species != SPECIES_NONE) {
+                    if (GetMonData(&gPlayerParty[i], MON_DATA_HP) <= 0) { // bro is dead
+                        SetMonData(&gPlayerParty[i], MON_DATA_DIED, &died);
+                        SendMonToPC(&gPlayerParty[i]);
+                        ZeroMonData(&gPlayerParty[i]);
+                    }
+                }
+            }
+            CompactPartySlots();
+            CalculatePlayerPartyCount();
             SetMainCallback2(CB2_WhiteOut);
+        }
     } else {
+        for (i = 0; i < PARTY_SIZE; i++) {
+            species = GetMonData(&gPlayerParty[i], MON_DATA_SPECIES2);
+            if (species != SPECIES_EGG && species != SPECIES_NONE) {
+                if (GetMonData(&gPlayerParty[i], MON_DATA_HP) <= 0) { // bro is dead
+                    SetMonData(&gPlayerParty[i], MON_DATA_DIED, &died);
+                    SendMonToPC(&gPlayerParty[i]);
+                    ZeroMonData(&gPlayerParty[i]);
+                }
+            }
+        }
+        CompactPartySlots();
+        CalculatePlayerPartyCount();
         SetMainCallback2(CB2_ReturnToFieldContinueScriptPlayMapMusic);
-        SetMonData(&gPlayerParty[0], MON_DATA_LEVEL, &level);
-        SetMonData(&gPlayerParty[0], MON_DATA_DIED, &died);
         if (!InBattlePyramid() && !InTrainerHillChallenge()) {
             RegisterTrainerInMatchCall();
             SetBattledTrainersFlags();
