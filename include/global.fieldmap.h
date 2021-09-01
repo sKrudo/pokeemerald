@@ -11,8 +11,7 @@
 
 #define METATILE_ID(tileset, name) (METATILE_##tileset##_##name)
 
-enum
-{
+enum {
     CONNECTION_INVALID = -1,
     CONNECTION_NONE,
     CONNECTION_SOUTH,
@@ -25,8 +24,7 @@ enum
 
 typedef void (*TilesetCB)(void);
 
-struct Tileset
-{
+struct Tileset {
     /*0x00*/ bool8 isCompressed;
     /*0x01*/ bool8 isSecondary;
     /*0x04*/ void *tiles;
@@ -36,8 +34,7 @@ struct Tileset
     /*0x14*/ TilesetCB callback;
 };
 
-struct MapLayout
-{
+struct MapLayout {
     /*0x00*/ s32 width;
     /*0x04*/ s32 height;
     /*0x08*/ u16 *border;
@@ -46,15 +43,13 @@ struct MapLayout
     /*0x14*/ struct Tileset *secondaryTileset;
 };
 
-struct BackupMapLayout
-{
+struct BackupMapLayout {
     s32 width;
     s32 height;
     u16 *map;
 };
 
-struct ObjectEventTemplate
-{
+struct ObjectEventTemplate {
     /*0x00*/ u8 localId;
     /*0x01*/ u8 graphicsId;
     /*0x02*/ u8 inConnection; // Leftover from FRLG
@@ -62,16 +57,15 @@ struct ObjectEventTemplate
     /*0x06*/ s16 y;
     /*0x08*/ u8 elevation;
     /*0x09*/ u8 movementType;
-    /*0x0A*/ u16 movementRangeX:4;
-             u16 movementRangeY:4;
+    /*0x0A*/ u16 movementRangeX: 4;
+    u16 movementRangeY: 4;
     /*0x0C*/ u16 trainerType;
     /*0x0E*/ u16 trainerRange_berryTreeId;
     /*0x10*/ const u8 *script;
     /*0x14*/ u16 flagId;
 };
 
-struct WarpEvent
-{
+struct WarpEvent {
     s16 x, y;
     u8 elevation;
     u8 warpId;
@@ -79,8 +73,7 @@ struct WarpEvent
     u8 mapGroup;
 };
 
-struct CoordEvent
-{
+struct CoordEvent {
     s16 x, y;
     u8 elevation;
     u16 trigger;
@@ -88,8 +81,7 @@ struct CoordEvent
     u8 *script;
 };
 
-struct BgEvent
-{
+struct BgEvent {
     u16 x, y;
     u8 elevation;
     u8 kind; // The "kind" field determines how to access bgUnion union below.
@@ -103,8 +95,7 @@ struct BgEvent
     } bgUnion;
 };
 
-struct MapEvents
-{
+struct MapEvents {
     u8 objectEventCount;
     u8 warpCount;
     u8 coordEventCount;
@@ -115,22 +106,19 @@ struct MapEvents
     struct BgEvent *bgEvents;
 };
 
-struct MapConnection
-{
+struct MapConnection {
     u8 direction;
     u32 offset;
     u8 mapGroup;
     u8 mapNum;
 };
 
-struct MapConnections
-{
+struct MapConnections {
     s32 count;
     struct MapConnection *connections;
 };
 
-struct MapHeader
-{
+struct MapHeader {
     /* 0x00 */ const struct MapLayout *mapLayout;
     /* 0x04 */ const struct MapEvents *events;
     /* 0x08 */ const u8 *mapScripts;
@@ -141,47 +129,48 @@ struct MapHeader
     /* 0x15 */ u8 cave;
     /* 0x16 */ u8 weather;
     /* 0x17 */ u8 mapType;
-    /* 0x18 */ u8 filler_18[2];
-               // fields correspond to the arguments in the map_header_flags macro
-    /* 0x1A */ bool8 allowCycling:1;
-               bool8 allowEscaping:1; // Escape Rope and Dig
-               bool8 allowRunning:1;
-               bool8 showMapName:5; // the last 4 bits are unused 
-                                    // but the 5 bit sized bitfield is required to match
+    /* 0x18 */ u8 filler_18;
+    /*0x19*/ u8 alreadyCapturedPokemon: 1;
+    u8 filler: 7;
+    // fields correspond to the arguments in the map_header_flags macro
+    /* 0x1A */ bool8 allowCycling: 1;
+    bool8 allowEscaping: 1; // Escape Rope and Dig
+    bool8 allowRunning: 1;
+    bool8 showMapName: 5; // the last 4 bits are unused
+    // but the 5 bit sized bitfield is required to match
     /* 0x1B */ u8 battleType;
 };
 
 
-struct ObjectEvent
-{
-    /*0x00*/ u32 active:1;
-             u32 singleMovementActive:1;
-             u32 triggerGroundEffectsOnMove:1;
-             u32 triggerGroundEffectsOnStop:1;
-             u32 disableCoveringGroundEffects:1;
-             u32 landingJump:1;
-             u32 heldMovementActive:1;
-             u32 heldMovementFinished:1;
-    /*0x01*/ u32 frozen:1;
-             u32 facingDirectionLocked:1;
-             u32 disableAnim:1;
-             u32 enableAnim:1;
-             u32 inanimate:1;
-             u32 invisible:1;
-             u32 offScreen:1;
-             u32 trackedByCamera:1;
-    /*0x02*/ u32 isPlayer:1;
-             u32 hasReflection:1;
-             u32 inShortGrass:1;
-             u32 inShallowFlowingWater:1;
-             u32 inSandPile:1;
-             u32 inHotSprings:1;
-             u32 hasShadow:1;
-             u32 spriteAnimPausedBackup:1;
-    /*0x03*/ u32 spriteAffineAnimPausedBackup:1;
-             u32 disableJumpLandingGroundEffect:1;
-             u32 fixedPriority:1;
-             u32 hideReflection:1;
+struct ObjectEvent {
+    /*0x00*/ u32 active: 1;
+    u32 singleMovementActive: 1;
+    u32 triggerGroundEffectsOnMove: 1;
+    u32 triggerGroundEffectsOnStop: 1;
+    u32 disableCoveringGroundEffects: 1;
+    u32 landingJump: 1;
+    u32 heldMovementActive: 1;
+    u32 heldMovementFinished: 1;
+    /*0x01*/ u32 frozen: 1;
+    u32 facingDirectionLocked: 1;
+    u32 disableAnim: 1;
+    u32 enableAnim: 1;
+    u32 inanimate: 1;
+    u32 invisible: 1;
+    u32 offScreen: 1;
+    u32 trackedByCamera: 1;
+    /*0x02*/ u32 isPlayer: 1;
+    u32 hasReflection: 1;
+    u32 inShortGrass: 1;
+    u32 inShallowFlowingWater: 1;
+    u32 inSandPile: 1;
+    u32 inHotSprings: 1;
+    u32 hasShadow: 1;
+    u32 spriteAnimPausedBackup: 1;
+    /*0x03*/ u32 spriteAffineAnimPausedBackup: 1;
+    u32 disableJumpLandingGroundEffect: 1;
+    u32 fixedPriority: 1;
+    u32 hideReflection: 1;
     /*0x04*/ u8 spriteId;
     /*0x05*/ u8 graphicsId;
     /*0x06*/ u8 movementType;
@@ -189,15 +178,15 @@ struct ObjectEvent
     /*0x08*/ u8 localId;
     /*0x09*/ u8 mapNum;
     /*0x0A*/ u8 mapGroup;
-    /*0x0B*/ u8 currentElevation:4;
-             u8 previousElevation:4;
+    /*0x0B*/ u8 currentElevation: 4;
+    u8 previousElevation: 4;
     /*0x0C*/ struct Coords16 initialCoords;
     /*0x10*/ struct Coords16 currentCoords;
     /*0x14*/ struct Coords16 previousCoords;
-    /*0x18*/ u16 facingDirection:4; // current direction?
-             u16 movementDirection:4;
-             u16 rangeX:4;
-             u16 rangeY:4;
+    /*0x18*/ u16 facingDirection: 4; // current direction?
+    u16 movementDirection: 4;
+    u16 rangeX: 4;
+    u16 rangeY: 4;
     /*0x1A*/ u8 fieldEffectSpriteId;
     /*0x1B*/ u8 warpArrowSpriteId;
     /*0x1C*/ u8 movementActionId;
@@ -210,18 +199,17 @@ struct ObjectEvent
     /*size = 0x24*/
 };
 
-struct ObjectEventGraphicsInfo
-{
+struct ObjectEventGraphicsInfo {
     /*0x00*/ u16 tileTag;
     /*0x02*/ u16 paletteTag;
     /*0x04*/ u16 reflectionPaletteTag;
     /*0x06*/ u16 size;
     /*0x08*/ s16 width;
     /*0x0A*/ s16 height;
-    /*0x0C*/ u8 paletteSlot:4;
-             u8 shadowSize:2;
-             u8 inanimate:1;
-             u8 disableReflectionPaletteLoad:1;
+    /*0x0C*/ u8 paletteSlot: 4;
+    u8 shadowSize: 2;
+    u8 inanimate: 1;
+    u8 disableReflectionPaletteLoad: 1;
     /*0x0D*/ u8 tracks;
     /*0x10*/ const struct OamData *oam;
     /*0x14*/ const struct SubspriteTable *subspriteTables;
@@ -250,8 +238,7 @@ enum {
 #define PLAYER_AVATAR_FLAG_FORCED_MOVE (1 << 6)
 #define PLAYER_AVATAR_FLAG_DASH        (1 << 7)
 
-enum
-{
+enum {
     ACRO_BIKE_NORMAL,
     ACRO_BIKE_TURNING,
     ACRO_BIKE_WHEELIE_STANDING,
@@ -261,8 +248,7 @@ enum
     ACRO_BIKE_STATE6,
 };
 
-enum
-{
+enum {
     COLLISION_NONE,
     COLLISION_OUTSIDE_RANGE,
     COLLISION_IMPASSABLE,
@@ -280,23 +266,20 @@ enum
 };
 
 // player running states
-enum
-{
+enum {
     NOT_MOVING,
     TURN_DIRECTION, // not the same as turning! turns your avatar without moving. also known as a turn frame in some circles
     MOVING,
 };
 
 // player tile transition states
-enum
-{
+enum {
     T_NOT_MOVING,
     T_TILE_TRANSITION,
     T_TILE_CENTER, // player is on a frame in which they are centered on a tile during which the player either stops or keeps their momentum and keeps going, changing direction if necessary.
 };
 
-struct PlayerAvatar
-{
+struct PlayerAvatar {
     /*0x00*/ u8 flags;
     /*0x01*/ u8 transitionFlags; // used to be named bike, but its definitely not that. seems to be some transition flags
     /*0x02*/ u8 runningState; // this is a static running state. 00 is not moving, 01 is turn direction, 02 is moving.
@@ -317,9 +300,8 @@ struct PlayerAvatar
     /*0x1C*/ u8 abStartSelectTimerHistory[8];
 };
 
-struct Camera
-{
-    bool8 active:1;
+struct Camera {
+    bool8 active: 1;
     s32 x;
     s32 y;
 };

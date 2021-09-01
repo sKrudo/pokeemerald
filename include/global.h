@@ -809,12 +809,12 @@ typedef union // 3b58
 
 struct WaldaPhrase
 {
-    u16 colors[2]; // Background, foreground.
-    u8 text[16];
-    u8 iconId;
-    u8 patternId;
-    bool8 patternUnlocked;
-};
+   /*0x00*/ u16 colors[2]; // Background, foreground.
+   /*0x02*/ u8 text[16];
+   /*0x03*/ u8 iconId;
+   /*0x04*/ u8 patternId;
+   /*0x05*/ bool8 patternUnlocked;
+}; //size = 0x06
 
 struct TrainerNameRecord
 {
@@ -1043,6 +1043,8 @@ struct SaveBlock1
     /*0x3D5A*/ u8 filler3D5A[0xA];
     /*0x3D64*/ struct SaveTrainerHill trainerHill;
     /*0x3D70*/ struct WaldaPhrase waldaPhrase;
+    /*0x3D76*/ u8 whiteOutIsEndGame:1;
+    /*0x3D77*/ u8 unused:7;
     // sizeof: 0x3D88
 };
 
