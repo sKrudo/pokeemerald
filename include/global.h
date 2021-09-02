@@ -477,6 +477,7 @@ struct SaveBlock2
              u16 optionsBattleStyle:1; // OPTIONS_BATTLE_STYLE_[SHIFT/SET]
              u16 optionsBattleSceneOff:1; // whether battle animations are disabled
              u16 regionMapZoom:1; // whether the map is zoomed in
+             u16 gameDifficulty:3; // Which difficulty the player chose (Normal/Hard/Challenge/Insanity, with Normal being 0)
     /*0x18*/ struct Pokedex pokedex;
     /*0x90*/ u8 filler_90[0x8];
     /*0x98*/ struct Time localTimeOffset;
@@ -1056,5 +1057,9 @@ struct MapPosition
     s16 y;
     s8 height;
 };
+#define DIFFICULTY_NORMAL     0
+#define DIFFICULTY_HARD       1
+#define DIFFICULTY_CHALLENGE  2
+#define DIFFICULTY_INSANITY   3
 
 #endif // GUARD_GLOBAL_H
