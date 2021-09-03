@@ -11,6 +11,7 @@ bool8 ScriptMenu_ShowPokemonPic(u16 species, u8 x, u8 y);
 bool8 (*ScriptMenu_GetPicboxWaitFunc(void))(void);
 int ConvertPixelWidthToTileWidth(int width);
 u8 CreateWindowFromRect(u8 x, u8 y, u8 width, u8 height);
+u8 CreateWindowFromRectBaseBlock(u8 x, u8 y, u8 width, u8 height, u8 baseBlock);
 void ClearToTransparentAndRemoveWindow(u8 windowId);
 int DisplayTextAndGetWidth(const u8* str, int width);
 int ScriptMenu_AdjustLeftCoordFromWidth(int left, int width);

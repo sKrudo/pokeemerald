@@ -632,6 +632,13 @@ u8 CreateWindowFromRect(u8 x, u8 y, u8 width, u8 height)
     PutWindowTilemap(windowId);
     return windowId;
 }
+u8 CreateWindowFromRectBaseBlock(u8 x, u8 y, u8 width, u8 height, u8 baseBlock)
+{
+    struct WindowTemplate template = CreateWindowTemplate(0, x + 1, y + 1, width, height, 15, baseBlock);
+    u8 windowId = AddWindow(&template);
+    PutWindowTilemap(windowId);
+    return windowId;
+}
 
 void ClearToTransparentAndRemoveWindow(u8 windowId)
 {
