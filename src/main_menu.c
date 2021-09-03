@@ -633,6 +633,11 @@ enum {
     ACTION_INVALID
 };
 
+enum {
+    NUZLOCKE_WHITEOUT,
+    NUZLOCKE_LAST
+};
+
 #define MAIN_MENU_BORDER_TILE   0x1D5
 
 static void CB2_MainMenu(void) {
@@ -2116,8 +2121,46 @@ static s8 NewGameBirchSpeech_ProcessGenderMenuInput(void) {
     return Menu_ProcessInputNoWrap();
 }
 
+static const u8 sText_Example1[] = _("{DYNAMIC 0}Example 1");
+static const u8 sText_Example2[] = _("Example 2");
+static const u8 sText_Example3[] = _("Example 3");
+static const u8 sText_Example4[] = _("Example 4");
+static const u8 sText_Example5[] = _("Example 5");
+static const u8 sText_Example6[] = _("Example 6");
+static const u8 sText_Example7[] = _("Example 7");
+static const u8 sText_Example8[] = _("Example 8");
+static const u8 sText_Example9[] = _("Example 9");
+
+static const struct ListMenuItem sSet1[] =
+        {
+                {sText_Example1, NUZLOCKE_WHITEOUT},
+                {sText_Example2, 1},
+                {sText_Example3, 2},
+                {sText_Example4, 3},
+                {sText_Example5, 4},
+                {sText_Example6, 5},
+                {sText_Example7, 6},
+                {sText_Example8, 7},
+                {sText_Example9, 8},
+        };
+static const struct ScrollingListMenu sScrollingSets[] =
+        {
+                {sSet1, ARRAY_COUNT(sSet1)},
+        };
+
+u8 GetNuzlockeFlag(u8 flag) {
+    switch (flag) {
+        case NUZLOCKE_WHITEOUT:
+            return 1;
+        default:
+            return 0;
+    }
+}
+
 static void NewGameBirchSpeech_ShowDifficultyMenu(void) {
-    u8 windowId, i;
+    u8 windowId;
+    u8 *str;
+    int i;
     windowId = 4;
     i = 0;
     gSpecialVar_0x8004 = 0;
@@ -2125,8 +2168,14 @@ static void NewGameBirchSpeech_ShowDifficultyMenu(void) {
     gSpecialVar_0x8006 = gNewGameBirchSpeechTextWindows[4].tilemapTop;
     gSpecialVar_0x8007 = 3;
     gSpecialVar_0x8008 = 0;
-
-    ScriptMenu_ScrollingMultichoice();
+//    for (i = NUZLOCKE_WHITEOUT; i < NUZLOCKE_LAST; i++){
+//
+//    }
+    DynamicPlaceholderTextUtil_SetPlaceholderPtr(0, gText_BirchOptionsActive);
+    DynamicPlaceholderTextUtil_ExpandPlaceholders(str,
+                                                  sScrollingSets[0].set[NUZLOCKE_WHITEOUT].name);
+//    sScrollingSets[0].set[NUZLOCKE_WHITEOUT] = (struct ListMenuItem) {str, NUZLOCKE_WHITEOUT};
+    ScriptMenu_ScrollingMultichoice(sScrollingSets);
 //    DrawMainMenuWindowBorder(&gNewGameBirchSpeechTextWindows[4], 0xF3);
 //    FillWindowPixelBuffer(windowId, PIXEL_FILL(1));
 //    DynamicPlaceholderTextUtil_SetPlaceholderPtr(0, gText_BirchOptionsActive);
