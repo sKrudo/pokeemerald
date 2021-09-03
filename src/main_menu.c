@@ -36,6 +36,9 @@
 #include "title_screen.h"
 #include "window.h"
 #include "mystery_gift.h"
+#include "dynamic_placeholder_text_util.h"
+
+
 
 /*
  * Main menu state machine
@@ -499,8 +502,8 @@ static const struct WindowTemplate gNewGameBirchSpeechTextWindows[] =
                         .bg = 0,
                         .tilemapLeft = 3,
                         .tilemapTop = 4,
-                        .width = 8,
-                        .height = 6,
+                        .width = 16,
+                        .height = 8,
                         .paletteNum = 15,
                         .baseBlock = 0x6D
                 },
@@ -1726,6 +1729,7 @@ static void Task_NewGameBirchSpeech_DifficultyDesc(u8 taskId) {
             str = gText_Pie_ChallengeMode;
             break;
     }
+    gSprites[gTasks[taskId].tPlayerSpriteId].invisible = FALSE;
 
     gTasks[taskId].tYesNoType = 2;
     NewGameBirchSpeech_ClearWindow(0);
@@ -1803,6 +1807,7 @@ static void Task_NewGameBirchSpeech_HackIntro(u8 taskId) {
 
 static void Task_NewGameBirchSpeech_WaitToShowDifficultyMenu(u8 taskId) {
     if (!RunTextPrintersAndIsPrinter0Active()) {
+        gSprites[gTasks[taskId].tPlayerSpriteId].invisible = TRUE;
         NewGameBirchSpeech_ShowDifficultyMenu();
         gTasks[taskId].func = Task_NewGameBirchSpeech_ChooseDifficulty;
     }
@@ -2112,12 +2117,38 @@ static s8 NewGameBirchSpeech_ProcessGenderMenuInput(void) {
 }
 
 static void NewGameBirchSpeech_ShowDifficultyMenu(void) {
+    u8 windowId, i;
+    windowId = 4;
+    i = 0;
     DrawMainMenuWindowBorder(&gNewGameBirchSpeechTextWindows[4], 0xF3);
-    FillWindowPixelBuffer(4, PIXEL_FILL(1));
-    PrintMenuTable(4, ARRAY_COUNT(sMenuActions_Difficulty), sMenuActions_Difficulty);
-    InitMenuInUpperLeftCornerPlaySoundWhenAPressed(4, 3, 0);
-    PutWindowTilemap(4);
-    CopyWindowToVram(4, 3);
+    FillWindowPixelBuffer(windowId, PIXEL_FILL(1));
+    DynamicPlaceholderTextUtil_SetPlaceholderPtr(0, gText_BirchOptionsActive);
+    DynamicPlaceholderTextUtil_ExpandPlaceholders(gStringVar1, gText_BirchNormalMode);
+    AddTextPrinterParameterized(windowId, 1, gStringVar1, 8, (i++ * 16) + 1, 0xFF, NULL);
+
+    DynamicPlaceholderTextUtil_SetPlaceholderPtr(0, gText_BirchOptionsNotActive);
+    DynamicPlaceholderTextUtil_ExpandPlaceholders(gStringVar2, gText_BirchOptionsResetOnWhiteout);
+    AddTextPrinterParameterized(windowId, 1, gStringVar2, 8, (i++ * 16) + 1, 0xFF, NULL);
+
+    DynamicPlaceholderTextUtil_SetPlaceholderPtr(0, gText_BirchOptionsActive);
+    DynamicPlaceholderTextUtil_ExpandPlaceholders(gStringVar3, gText_BirchChallengeMode);
+    AddTextPrinterParameterized(windowId, 1, gStringVar3, 8, (i++ * 16) + 1, 0xFF, NULL);
+
+    DynamicPlaceholderTextUtil_SetPlaceholderPtr(0, gText_BirchOptionsActive);
+    DynamicPlaceholderTextUtil_ExpandPlaceholders(gStringVar1, gText_BirchNormalMode);
+    AddTextPrinterParameterized(windowId, 1, gStringVar1, 8, (i++ * 16) + 1, 0xFF, NULL);
+
+    DynamicPlaceholderTextUtil_SetPlaceholderPtr(0, gText_BirchOptionsActive);
+    DynamicPlaceholderTextUtil_ExpandPlaceholders(gStringVar1, gText_BirchHardMode);
+    AddTextPrinterParameterized(windowId, 1, gStringVar1, 8, (i++ * 16) + 1, 0xFF, NULL);
+
+    DynamicPlaceholderTextUtil_SetPlaceholderPtr(0, gText_BirchOptionsActive);
+    DynamicPlaceholderTextUtil_ExpandPlaceholders(gStringVar1, gText_BirchNormalMode);
+    AddTextPrinterParameterized(windowId, 1, gStringVar1, 8, (i++ * 16) + 1, 0xFF, NULL);
+//    PrintMenuTable(4, ARRAY_COUNT(sMenuActions_Difficulty), sMenuActions_Difficulty);
+    InitMenuInUpperLeftCornerPlaySoundWhenAPressed(4, i, 0);
+    PutWindowTilemap(windowId);
+    CopyWindowToVram(windowId, 3);
 }
 
 static void NewGameBirchSpeech_SetDefaultPlayerName(u8 nameId) {

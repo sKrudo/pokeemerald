@@ -40,7 +40,6 @@ struct MenuAction
         u8 (*u8_void)(void);
     } func;
 };
-
 extern const u16 gUnknown_0860F074[];
 
 void FreeAllOverworldWindowBuffers(void);
