@@ -24,6 +24,7 @@ struct ListMenuItem {
     const u8 *name;
     s32 id;
 };
+
 struct ListMenuTemplate {
     const struct ListMenuItem *items;
 
@@ -93,6 +94,7 @@ struct ScrollingListMenu {
     const struct ListMenuItem *set;
     int count;
 };
+
 extern struct ScrollArrowsTemplate gTempScrollArrowTemplate;
 extern struct ListMenuTemplate gMultiuseListMenuTemplate;
 
@@ -141,6 +143,6 @@ void RemoveScrollIndicatorArrowPair(u8 taskId);
 
 void Task_ScrollIndicatorArrowPairOnMainMenu(u8 taskId);
 
-void ScriptMenu_ScrollingMultichoice(const struct ScrollingListMenu *menu);
+void ScriptMenu_ScrollingMultichoice(struct ScrollingListMenu *menu);
 
 #endif //GUARD_LIST_MENU_H

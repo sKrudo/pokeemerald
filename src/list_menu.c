@@ -1389,7 +1389,7 @@ static const struct ListMenuTemplate sMultichoiceListTemplate =
 // 0x8006 = window y
 // 0x8007 = showed at once
 // 0x8008 = Allow B press
-void ScriptMenu_ScrollingMultichoice(const struct ScrollingListMenu *menu) {
+void ScriptMenu_ScrollingMultichoice(struct ScrollingListMenu *menu) {
     int i, windowId, taskId, width = 0;
     int setId = gSpecialVar_0x8004;
     int left = gSpecialVar_0x8005;

@@ -37,8 +37,9 @@
 #include "window.h"
 #include "mystery_gift.h"
 #include "dynamic_placeholder_text_util.h"
-#include "list_menu.h"
-
+#include "malloc.h"
+#include "printf.h"
+#include "mgba.h"
 
 /*
  * Main menu state machine
@@ -635,6 +636,7 @@ enum {
 
 enum {
     NUZLOCKE_WHITEOUT,
+    NUZLOCKE_DUPECLAUSE,
     NUZLOCKE_LAST
 };
 
@@ -2121,46 +2123,107 @@ static s8 NewGameBirchSpeech_ProcessGenderMenuInput(void) {
     return Menu_ProcessInputNoWrap();
 }
 
-static const u8 sText_Example1[] = _("{DYNAMIC 0}Example 1");
+static const u8 sText_Example1[] = _("{DYNAMIC 0}Whiteout Clause");
 static const u8 sText_Example2[] = _("Example 2");
 static const u8 sText_Example3[] = _("Example 3");
 static const u8 sText_Example4[] = _("Example 4");
 static const u8 sText_Example5[] = _("Example 5");
 static const u8 sText_Example6[] = _("Example 6");
-static const u8 sText_Example7[] = _("Example 7");
-static const u8 sText_Example8[] = _("Example 8");
-static const u8 sText_Example9[] = _("Example 9");
+static u8 sText_Example7[] = _("{DYNAMIC 0}Dupe Clause");
+static u8 sText_Example8[] = _("Example 8");
+static u8 sText_Example9[] = _("Example 9");
+static u8 sText_Example10[] = _("Example 10");
 
-static const struct ListMenuItem sSet1[] =
+struct ListMenuItemNot {
+    u8 *name;
+    s32 id;
+};
+static struct ListMenuItem sSet1[] =
         {
                 {sText_Example1, NUZLOCKE_WHITEOUT},
                 {sText_Example2, 1},
                 {sText_Example3, 2},
                 {sText_Example4, 3},
-                {sText_Example5, 4},
-                {sText_Example6, 5},
-                {sText_Example7, 6},
-                {sText_Example8, 7},
-                {sText_Example9, 8},
+                {sText_Example5, 4}
         };
-static const struct ScrollingListMenu sScrollingSets[] =
+static struct ListMenuItem sSet2[] =
         {
-                {sSet1, ARRAY_COUNT(sSet1)},
+                {sText_Example1, NUZLOCKE_WHITEOUT},
+                {sText_Example7, NUZLOCKE_DUPECLAUSE}
+        };
+//static struct ListMenuItem sSet2[] =
+//        {
+//                {sText_Example1, NUZLOCKE_WHITEOUT},
+//                {sText_Example2, 1},
+//                {sText_Example3, 2},
+//                {sText_Example4, 3},
+//                {sText_Example5, 4},
+//                {sText_Example6, 5},
+//                {sText_Example7, 6},
+//                {sText_Example8, 7},
+//                {sText_Example9, 8},
+//        };
+struct ScrollingListMenuNotConst {
+    struct ListMenuItem *set;
+    int count;
+};
+
+static const struct ScrollingListMenuNotConst sScrollingSets =
+        {
+                sSet2, ARRAY_COUNT(sSet2)
         };
 
 u8 GetNuzlockeFlag(u8 flag) {
     switch (flag) {
         case NUZLOCKE_WHITEOUT:
             return 1;
+        case NUZLOCKE_DUPECLAUSE:
+            return 0;
         default:
             return 0;
     }
 }
 
+const struct ListMenuItem *GetNewList(const struct ScrollingListMenuNotConst *currentList, int arrSize) {
+    struct ListMenuItemNot *ret = malloc(sizeof(struct ListMenuItem) * (arrSize + 1));
+    int i;
+    u8 *str;
+
+    for (i = 0; i < arrSize; i++) {
+        ret[i] = (struct ListMenuItemNot) {malloc(sizeof(u8) * 40), i};
+        if (GetNuzlockeFlag(i) == 1)
+            DynamicPlaceholderTextUtil_SetPlaceholderPtr(0, gText_BirchOptionsActive);
+        else
+            DynamicPlaceholderTextUtil_SetPlaceholderPtr(0, gText_BirchOptionsNotActive);
+
+        DynamicPlaceholderTextUtil_ExpandPlaceholders(ret[i].name,
+                                                      currentList->set[i].name);
+        mgba_printf(MGBA_LOG_DEBUG, "%s", ConvertToAscii(ret[i].name));
+
+    }
+    return (struct ListMenuItem *) ret;
+}
+
+static struct ScrollingListMenu *
+GetNewStruct(const struct ScrollingListMenuNotConst *currentList, int arrSize) {
+    struct ScrollingListMenu *ret;
+    ret = malloc(sizeof(struct ScrollingListMenu));
+    ret->set = GetNewList(currentList, arrSize);
+    ret->count = arrSize;
+    return ret;
+}
+
 static void NewGameBirchSpeech_ShowDifficultyMenu(void) {
     u8 windowId;
-    u8 *str;
+//    u8 *str;
+//    u8 **names;
     int i;
+    mgba_printf(MGBA_LOG_DEBUG, "Hello from start function");
+    mgba_printf(MGBA_LOG_DEBUG, "Before malloc");
+
+//    names = malloc(sizeof(u8 *) * NUZLOCKE_LAST);
+    mgba_printf(MGBA_LOG_DEBUG, "After malloc");
+
     windowId = 4;
     i = 0;
     gSpecialVar_0x8004 = 0;
@@ -2168,14 +2231,33 @@ static void NewGameBirchSpeech_ShowDifficultyMenu(void) {
     gSpecialVar_0x8006 = gNewGameBirchSpeechTextWindows[4].tilemapTop;
     gSpecialVar_0x8007 = 3;
     gSpecialVar_0x8008 = 0;
+    mgba_printf(MGBA_LOG_DEBUG, "Before names");
+
+//    names[0] = sText_Example7;
+    mgba_printf(MGBA_LOG_DEBUG, "After names, before scrolling");
+
+    ScriptMenu_ScrollingMultichoice(
+            GetNewStruct(&sScrollingSets, NUZLOCKE_LAST));
+    mgba_printf(MGBA_LOG_DEBUG, "haha no");
+
 //    for (i = NUZLOCKE_WHITEOUT; i < NUZLOCKE_LAST; i++){
 //
 //    }
-    DynamicPlaceholderTextUtil_SetPlaceholderPtr(0, gText_BirchOptionsActive);
-    DynamicPlaceholderTextUtil_ExpandPlaceholders(str,
-                                                  sScrollingSets[0].set[NUZLOCKE_WHITEOUT].name);
+//    DynamicPlaceholderTextUtil_SetPlaceholderPtr(0, gText_BirchOptionsActive);
+//    DynamicPlaceholderTextUtil_ExpandPlaceholders(sScrollingSets.set[NUZLOCKE_WHITEOUT].name,
+//                                                  sScrollingSets.set[NUZLOCKE_WHITEOUT].name);
+//    sScrollingSets.set[NUZLOCKE_WHITEOUT] = (struct ListMenuItemNot) {sText_Example10, NUZLOCKE_WHITEOUT};
 //    sScrollingSets[0].set[NUZLOCKE_WHITEOUT] = (struct ListMenuItem) {str, NUZLOCKE_WHITEOUT};
-    ScriptMenu_ScrollingMultichoice(sScrollingSets);
+//    a = (struct) &sScrollingSets;
+//    ((struct {
+//        u8 *s;
+//        s32 id;
+//    } *) &sScrollingSets.set[0])->s
+
+//    scrolling = (struct ScrollingListMenuNotConst *) &sScrollingSets;
+//    scrolling->set[NUZLOCKE_WHITEOUT] = (struct ListMenuItem) {str, NUZLOCKE_WHITEOUT};
+
+
 //    DrawMainMenuWindowBorder(&gNewGameBirchSpeechTextWindows[4], 0xF3);
 //    FillWindowPixelBuffer(windowId, PIXEL_FILL(1));
 //    DynamicPlaceholderTextUtil_SetPlaceholderPtr(0, gText_BirchOptionsActive);
