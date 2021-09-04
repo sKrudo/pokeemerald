@@ -1248,7 +1248,11 @@ SECTIONS {
         *libc.a:syscalls.o(.rodata);
         src/libisagbprn.o(.rodata);
     } =0
-
+    .data :
+    ALIGN(4)
+    {
+    src/main_menu.o;
+    } =0
     other_data :
     ALIGN(4)
     {
