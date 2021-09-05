@@ -1,3 +1,5 @@
+# Pokemon Emerald Nuzlocke
+This is a fork of `pret/pokeemerald` focused on adding nuzlocke rules inside the rom.
 # Instructions
 
 These instructions explain how to set up the tools required to build **pokeemerald**, which assembles the source files into a ROM.

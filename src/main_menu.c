@@ -40,7 +40,7 @@
 #include "malloc.h"
 #include "printf.h"
 #include "mgba.h"
-
+#include "main_menu.h"
 /*
  * Main menu state machine
  * -----------------------
@@ -634,11 +634,6 @@ enum {
     ACTION_INVALID
 };
 
-enum {
-    NUZLOCKE_WHITEOUT,
-    NUZLOCKE_DUPECLAUSE,
-    NUZLOCKE_LAST
-};
 
 #define MAIN_MENU_BORDER_TILE   0x1D5
 
@@ -1822,6 +1817,21 @@ static void Task_NewGameBirchSpeech_WaitToShowDifficultyMenu(u8 taskId) {
 
 static void Task_NewGameBirchSpeech_ChooseDifficulty(u8 taskId) {
 //    int difficulty = NewGameBirchSpeech_ProcessDifficultyMenuInput();
+//    if (!JOY_NEW(A_BUTTON))
+//        return;
+//    switch (gSpecialVar_Result) {
+//        case NUZLOCKE_WHITEOUT:
+//            mgba_printf(MGBA_LOG_DEBUG, "WHITEOUT PULSED");
+//            NewGameBirchSpeech_ShowDifficultyMenu();
+//
+//            break;
+//        case NUZLOCKE_DUPECLAUSE:
+//            mgba_printf(MGBA_LOG_DEBUG, "DUPE PULSED");
+//            NewGameBirchSpeech_ShowDifficultyMenu();
+//            break;
+//        default:
+//            break;
+//    }
 
 //    switch (difficulty) {
 //        case 0:
@@ -2130,6 +2140,7 @@ static const u8 sText_Example4[] = _("Example 4");
 static const u8 sText_Example5[] = _("Example 5");
 static const u8 sText_Example6[] = _("Example 6");
 static u8 sText_Example7[] = _("{DYNAMIC 0}Dupe Clause");
+static u8 sText_NuzlockeAccept[] = _("Accept Settings");
 static u8 sText_Example8[] = _("Example 8");
 static u8 sText_Example9[] = _("Example 9");
 static u8 sText_Example10[] = _("Example 10");
@@ -2148,8 +2159,9 @@ static struct ListMenuItem sSet1[] =
         };
 static struct ListMenuItem sSet2[] =
         {
-                {sText_Example1, NUZLOCKE_WHITEOUT},
-                {sText_Example7, NUZLOCKE_DUPECLAUSE}
+                {sText_NuzlockeAccept, NUZLOCKE_ACCEPT},
+                {sText_Example1,       NUZLOCKE_WHITEOUT},
+                {sText_Example7,       NUZLOCKE_DUPECLAUSE}
         };
 //static struct ListMenuItem sSet2[] =
 //        {

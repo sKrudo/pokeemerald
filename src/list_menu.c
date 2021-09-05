@@ -15,6 +15,9 @@
 #include "event_data.h"
 #include "script.h"
 #include "script_menu.h"
+#include "printf.h"
+#include "mgba.h"
+#include "main_menu.h"
 
 struct UnkIndicatorsStruct {
     u8 field_0;
@@ -100,8 +103,6 @@ static void ListMenuRemoveCursorObject(u8 taskId, u32 cursorKind);
 static void SpriteCallback_ScrollIndicatorArrow(struct Sprite *sprite);
 
 static void SpriteCallback_RedArrowCursor(struct Sprite *sprite);
-
-
 
 
 // EWRAM vars
@@ -1431,17 +1432,32 @@ static void Task_ScrollingMultichoiceInput(u8 taskId) {
                 done = TRUE;
             }
             break;
+        case NUZLOCKE_WHITEOUT:
+            mgba_printf(MGBA_LOG_DEBUG, "WHITEOUT PULSED");
+//            NewGameBirchSpeech_ShowDifficultyMenu();
+
+            break;
+        case NUZLOCKE_DUPECLAUSE:
+            mgba_printf(MGBA_LOG_DEBUG, "DUPE PULSED");
+//            NewGameBirchSpeech_ShowDifficultyMenu();
+            break;
         default:
+            mgba_printf(MGBA_LOG_DEBUG, "DONE PULSED");
+
             gSpecialVar_Result = input;
             done = TRUE;
             break;
     }
-
     if (done) {
-        DestroyListMenuTask(gTasks[taskId].data[0], NULL, NULL);
-        ClearStdWindowAndFrame(gTasks[taskId].data[2], TRUE);
-        RemoveWindow(gTasks[taskId].data[2]);
+        DestroyListMenuTask(gTasks[taskId]
+                                    .data[0], NULL, NULL);
+        ClearStdWindowAndFrame(gTasks[taskId]
+                                       .data[2], TRUE);
+        RemoveWindow(gTasks[taskId]
+                             .data[2]);
+
         EnableBothScriptContexts();
+
         DestroyTask(taskId);
     }
 }
