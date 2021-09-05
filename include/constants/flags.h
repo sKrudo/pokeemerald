@@ -44,9 +44,7 @@
 #define FLAG_SET_WALL_CLOCK                      (FLAG_HIDE_SKY_PILLAR_TOP_RAYQUAZA_STILL + 1)
 #define FLAG_RESCUED_BIRCH                       (FLAG_SET_WALL_CLOCK + 1)
 #define FLAG_LEGENDARIES_IN_SOOTOPOLIS           (FLAG_RESCUED_BIRCH + 1)
-#define FLAG_UNUSED_0x054                    (FLAG_LEGENDARIES_IN_SOOTOPOLIS + 1)  // Unused Flag
-#define FLAG_UNUSED_0x055                    (FLAG_UNUSED_0x054 + 1)  // Unused Flag
-#define FLAG_HIDE_CONTEST_POKE_BALL          (FLAG_UNUSED_0x055 + 1)  // Always set after new game, object it hides is added directly
+#define FLAG_HIDE_CONTEST_POKE_BALL          (FLAG_LEGENDARIES_IN_SOOTOPOLIS + 1)  // Always set after new game, object it hides is added directly
 #define FLAG_MET_RIVAL_MOM                   (FLAG_HIDE_CONTEST_POKE_BALL + 1)
 #define FLAG_BIRCH_AIDE_MET                  (FLAG_MET_RIVAL_MOM + 1)
 #define FLAG_DECLINED_BIKE                   (FLAG_BIRCH_AIDE_MET + 1)
@@ -64,8 +62,7 @@
 #define FLAG_MOSSDEEP_GYM_SWITCH_2           (FLAG_MOSSDEEP_GYM_SWITCH_1 + 1) //
 #define FLAG_MOSSDEEP_GYM_SWITCH_3           (FLAG_MOSSDEEP_GYM_SWITCH_2 + 1) //
 #define FLAG_MOSSDEEP_GYM_SWITCH_4           (FLAG_MOSSDEEP_GYM_SWITCH_3 + 1) //
-#define FLAG_UNUSED_0x068                    (FLAG_MOSSDEEP_GYM_SWITCH_4 + 1)  // Unused Flag
-#define FLAG_OCEANIC_MUSEUM_MET_REPORTER     (FLAG_UNUSED_0x068 + 1)
+#define FLAG_OCEANIC_MUSEUM_MET_REPORTER     (FLAG_MOSSDEEP_GYM_SWITCH_4 + 1)
 #define FLAG_RECEIVED_HM04                   (FLAG_OCEANIC_MUSEUM_MET_REPORTER + 1)
 #define FLAG_RECEIVED_HM06                   (FLAG_RECEIVED_HM04 + 1)
 #define FLAG_WHITEOUT_TO_LAVARIDGE           (FLAG_RECEIVED_HM06 + 1) // Set after defeating Flannery, so the player cant white out from poison before receiving Go Goggles
@@ -73,8 +70,7 @@
 #define FLAG_RECEIVED_HM02                   (FLAG_RECEIVED_HM05 + 1)
 #define FLAG_GROUDON_AWAKENED_MAGMA_HIDEOUT  (FLAG_RECEIVED_HM02 + 1)
 #define FLAG_TEAM_AQUA_ESCAPED_IN_SUBMARINE  (FLAG_GROUDON_AWAKENED_MAGMA_HIDEOUT + 1)
-#define FLAG_UNUSED_RS_LEGENDARY_BATTLE_DONE (FLAG_TEAM_AQUA_ESCAPED_IN_SUBMARINE + 1) // Unused Flag. Used in R/S to indicate whether player defeated or caught Groudon/Kyogre in Cave of Origin.
-#define FLAG_SCOTT_CALL_BATTLE_FRONTIER      (FLAG_UNUSED_RS_LEGENDARY_BATTLE_DONE + 1) // Used in order to activate a phone call from Scott, inviting the player to the SS Tidal.
+#define FLAG_SCOTT_CALL_BATTLE_FRONTIER      (FLAG_TEAM_AQUA_ESCAPED_IN_SUBMARINE + 1) // Used in order to activate a phone call from Scott, inviting the player to the SS Tidal.
 #define FLAG_RECEIVED_METEORITE              (FLAG_SCOTT_CALL_BATTLE_FRONTIER + 1)
 #define FLAG_ADVENTURE_STARTED               (FLAG_RECEIVED_METEORITE + 1) // RECEIVED Pokédex.
 #define FLAG_DEFEATED_MAGMA_SPACE_CENTER     (FLAG_ADVENTURE_STARTED + 1) // Set when Team Magma is defeated at Mossdeep's Space Center.
@@ -110,8 +106,7 @@
 #define FLAG_MR_BRINEY_SAILING_INTRO         (FLAG_CAUGHT_HO_OH + 1)
 #define FLAG_DOCK_REJECTED_DEVON_GOODS       (FLAG_MR_BRINEY_SAILING_INTRO + 1)
 #define FLAG_DELIVERED_DEVON_GOODS           (FLAG_DOCK_REJECTED_DEVON_GOODS + 1)
-#define FLAG_RECEIVED_CONTEST_PASS           (FLAG_DELIVERED_DEVON_GOODS + 1) // Unused, leftover from R/S
-#define FLAG_RECEIVED_CASTFORM               (FLAG_RECEIVED_CONTEST_PASS + 1)
+#define FLAG_RECEIVED_CASTFORM               (FLAG_DELIVERED_DEVON_GOODS + 1)
 #define FLAG_RECEIVED_SUPER_ROD              (FLAG_RECEIVED_CASTFORM + 1)
 #define FLAG_RUSTBORO_NPC_TRADE_COMPLETED    (FLAG_RECEIVED_SUPER_ROD + 1)
 #define FLAG_PACIFIDLOG_NPC_TRADE_COMPLETED  (FLAG_RUSTBORO_NPC_TRADE_COMPLETED + 1)
@@ -193,8 +188,7 @@
 #define FLAG_RECEIVED_TM36                   (FLAG_RECEIVED_TM27 + 1)
 #define FLAG_RECEIVED_TM05                   (FLAG_RECEIVED_TM36 + 1)
 #define FLAG_RECEIVED_TM19                   (FLAG_RECEIVED_TM05 + 1)
-#define FLAG_UNUSED_0x0E9                    (FLAG_RECEIVED_TM19 + 1) // Unused Flag
-#define FLAG_RECEIVED_TM44                   (FLAG_UNUSED_0x0E9 + 1)
+#define FLAG_RECEIVED_TM44                   (FLAG_RECEIVED_TM19 + 1)
 #define FLAG_RECEIVED_TM45                   (FLAG_RECEIVED_TM44 + 1)
 #define FLAG_RECEIVED_GLASS_ORNAMENT         (FLAG_RECEIVED_TM45 + 1)
 #define FLAG_RECEIVED_SILVER_SHIELD          (FLAG_RECEIVED_GLASS_ORNAMENT + 1)
@@ -277,24 +271,7 @@
 #define FLAG_RECEIVED_AURORA_TICKET          (FLAG_BEAT_MAGMA_GRUNT_JAGGED_PASS + 1)
 #define FLAG_RECEIVED_MYSTIC_TICKET          (FLAG_RECEIVED_AURORA_TICKET + 1)
 #define FLAG_RECEIVED_OLD_SEA_MAP            (FLAG_RECEIVED_MYSTIC_TICKET + 1) 
-#define FLAG_UNUSED_MYSTERY_GIFT_0x13D       (FLAG_RECEIVED_OLD_SEA_MAP + 1)
-#define FLAG_UNUSED_MYSTERY_GIFT_0x13E       (FLAG_UNUSED_MYSTERY_GIFT_0x13D + 1)
-#define FLAG_UNUSED_MYSTERY_GIFT_0x13F       (FLAG_UNUSED_MYSTERY_GIFT_0x13E + 1)
-#define FLAG_UNUSED_MYSTERY_GIFT_0x140       (FLAG_UNUSED_MYSTERY_GIFT_0x13F + 1)
-#define FLAG_UNUSED_MYSTERY_GIFT_0x141       (FLAG_UNUSED_MYSTERY_GIFT_0x140 + 1)
-#define FLAG_UNUSED_MYSTERY_GIFT_0x142       (FLAG_UNUSED_MYSTERY_GIFT_0x141 + 1)
-#define FLAG_UNUSED_MYSTERY_GIFT_0x143       (FLAG_UNUSED_MYSTERY_GIFT_0x142 + 1)
-#define FLAG_UNUSED_MYSTERY_GIFT_0x144       (FLAG_UNUSED_MYSTERY_GIFT_0x143 + 1)
-#define FLAG_UNUSED_MYSTERY_GIFT_0x145       (FLAG_UNUSED_MYSTERY_GIFT_0x144 + 1)
-#define FLAG_UNUSED_MYSTERY_GIFT_0x146       (FLAG_UNUSED_MYSTERY_GIFT_0x145 + 1)
-#define FLAG_UNUSED_MYSTERY_GIFT_0x147       (FLAG_UNUSED_MYSTERY_GIFT_0x146 + 1)
-#define FLAG_UNUSED_MYSTERY_GIFT_0x148       (FLAG_UNUSED_MYSTERY_GIFT_0x147 + 1)
-#define FLAG_UNUSED_MYSTERY_GIFT_0x149       (FLAG_UNUSED_MYSTERY_GIFT_0x148 + 1)
-#define FLAG_UNUSED_MYSTERY_GIFT_0x14A       (FLAG_UNUSED_MYSTERY_GIFT_0x149 + 1)
-#define FLAG_UNUSED_MYSTERY_GIFT_0x14B       (FLAG_UNUSED_MYSTERY_GIFT_0x14A + 1)
-#define FLAG_UNUSED_MYSTERY_GIFT_0x14C       (FLAG_UNUSED_MYSTERY_GIFT_0x14B + 1)
-#define FLAG_UNUSED_MYSTERY_GIFT_0x14D       (FLAG_UNUSED_MYSTERY_GIFT_0x14C + 1)
-#define FLAG_MIRAGE_TOWER_VISIBLE            (FLAG_UNUSED_MYSTERY_GIFT_0x14D + 1)
+#define FLAG_MIRAGE_TOWER_VISIBLE            (FLAG_RECEIVED_OLD_SEA_MAP + 1)
 #define FLAG_CHOSE_ROOT_FOSSIL               (FLAG_MIRAGE_TOWER_VISIBLE + 1)
 #define FLAG_CHOSE_CLAW_FOSSIL               (FLAG_CHOSE_ROOT_FOSSIL + 1)
 #define FLAG_RECEIVED_POWDER_JAR             (FLAG_CHOSE_CLAW_FOSSIL + 1)
@@ -388,9 +365,7 @@
 #define FLAG_REMATCH_GLACIA                  (FLAG_REMATCH_PHOEBE + 1)
 #define FLAG_REMATCH_DRAKE                   (FLAG_REMATCH_GLACIA + 1)
 #define FLAG_REMATCH_WALLACE                 (FLAG_REMATCH_DRAKE + 1)
-#define FLAG_UNUSED_0x1AA                    (FLAG_REMATCH_WALLACE + 1) // Unused Flag
-#define FLAG_UNUSED_0x1AB                    (FLAG_UNUSED_0x1AA + 1) // Unused Flag
-#define FLAG_DEFEATED_DEOXYS                 (FLAG_UNUSED_0x1AB + 1)
+#define FLAG_DEFEATED_DEOXYS                 (FLAG_REMATCH_WALLACE + 1)
 #define FLAG_BATTLED_DEOXYS                  (FLAG_DEFEATED_DEOXYS + 1)
 #define FLAG_SHOWN_EON_TICKET                (FLAG_BATTLED_DEOXYS + 1)
 #define FLAG_SHOWN_AURORA_TICKET             (FLAG_SHOWN_EON_TICKET + 1)
@@ -436,8 +411,7 @@
 #define FLAG_ENABLE_WINONA_MATCH_CALL        (FLAG_ENABLE_FLANNERY_MATCH_CALL + 1)
 #define FLAG_ENABLE_TATE_AND_LIZA_MATCH_CALL (FLAG_ENABLE_WINONA_MATCH_CALL + 1)
 #define FLAG_ENABLE_JUAN_MATCH_CALL          (FLAG_ENABLE_TATE_AND_LIZA_MATCH_CALL + 1)
-#define FLAG_UNUSED_0x1DA                    (FLAG_ENABLE_JUAN_MATCH_CALL + 1) // Unused Flag
-#define FLAG_SHOWN_MYSTIC_TICKET             (FLAG_UNUSED_0x1DA + 1)
+#define FLAG_SHOWN_MYSTIC_TICKET             (FLAG_ENABLE_JUAN_MATCH_CALL + 1)
 #define FLAG_DEFEATED_HO_OH                  (FLAG_SHOWN_MYSTIC_TICKET + 1)
 #define FLAG_DEFEATED_LUGIA                  (FLAG_DEFEATED_HO_OH + 1)
 // Mystery Gift Flags (Unknown)
@@ -601,8 +575,7 @@
 #define FLAG_HIDE_PETALBURG_CITY_WALLY                              (FLAG_HIDE_PETALBURG_WOODS_AQUA_GRUNT + 1)
 #define FLAG_HIDE_MOSSDEEP_CITY_STEVENS_HOUSE_INVISIBLE_NINJA_BOY   (FLAG_HIDE_PETALBURG_CITY_WALLY + 1)
 #define FLAG_HIDE_PETALBURG_CITY_WALLYS_MOM                         (FLAG_HIDE_MOSSDEEP_CITY_STEVENS_HOUSE_INVISIBLE_NINJA_BOY + 1)
-#define FLAG_UNUSED_0x2D9                                           (FLAG_HIDE_PETALBURG_CITY_WALLYS_MOM + 1) // Unused Flag
-#define FLAG_HIDE_LILYCOVE_FAN_CLUB_INTERVIEWER                     (FLAG_UNUSED_0x2D9 + 1)
+#define FLAG_HIDE_LILYCOVE_FAN_CLUB_INTERVIEWER                     (FLAG_HIDE_PETALBURG_CITY_WALLYS_MOM + 1)
 #define FLAG_HIDE_RUSTBORO_CITY_AQUA_GRUNT                          (FLAG_HIDE_LILYCOVE_FAN_CLUB_INTERVIEWER + 1)
 #define FLAG_HIDE_RUSTBORO_CITY_DEVON_EMPLOYEE_1                    (FLAG_HIDE_RUSTBORO_CITY_AQUA_GRUNT + 1)
 #define FLAG_HIDE_SEAFLOOR_CAVERN_ROOM_9_KYOGRE_ASLEEP              (FLAG_HIDE_RUSTBORO_CITY_DEVON_EMPLOYEE_1 + 1)
@@ -1001,25 +974,21 @@
 #define FLAG_ITEM_OLD_MAGMA_HIDEOUT_B1F_MASTER_BALL                 (FLAG_ITEM_AQUA_HIDEOUT_B1F_MASTER_BALL + 1) // Unused Flag, leftover from the Ruby Magma hideout
 #define FLAG_ITEM_OLD_MAGMA_HIDEOUT_B1F_MAX_ELIXIR                  (FLAG_ITEM_OLD_MAGMA_HIDEOUT_B1F_MASTER_BALL + 1) // Unused Flag, leftover from the Ruby Magma hideout
 #define FLAG_ITEM_OLD_MAGMA_HIDEOUT_B2F_NEST_BALL                   (FLAG_ITEM_OLD_MAGMA_HIDEOUT_B1F_MAX_ELIXIR + 1) // Unused Flag, leftover from the Ruby Magma hideout
-#define FLAG_UNUSED_0x468                                           (FLAG_ITEM_OLD_MAGMA_HIDEOUT_B2F_NEST_BALL + 1) // Unused Flag
-#define FLAG_ITEM_MT_PYRE_2F_ULTRA_BALL                             (FLAG_UNUSED_0x468 + 1)
+#define FLAG_ITEM_MT_PYRE_2F_ULTRA_BALL                             (FLAG_ITEM_OLD_MAGMA_HIDEOUT_B2F_NEST_BALL + 1)
 #define FLAG_ITEM_MT_PYRE_4F_SEA_INCENSE                            (FLAG_ITEM_MT_PYRE_2F_ULTRA_BALL + 1)
 #define FLAG_ITEM_SAFARI_ZONE_SOUTH_WEST_MAX_REVIVE                 (FLAG_ITEM_MT_PYRE_4F_SEA_INCENSE + 1)
 #define FLAG_ITEM_AQUA_HIDEOUT_B1F_NUGGET                           (FLAG_ITEM_SAFARI_ZONE_SOUTH_WEST_MAX_REVIVE + 1)
 #define FLAG_ITEM_MOSSDEEP_STEVENS_HOUSE_HM08                       (FLAG_ITEM_AQUA_HIDEOUT_B1F_NUGGET + 1) // Unused Flag, leftover from R/S. HM08 is given to the player directly in Emerald
 #define FLAG_ITEM_ROUTE_119_NUGGET                                  (FLAG_ITEM_MOSSDEEP_STEVENS_HOUSE_HM08 + 1)
 #define FLAG_ITEM_ROUTE_104_POTION                                  (FLAG_ITEM_ROUTE_119_NUGGET + 1)
-#define FLAG_UNUSED_0x470                                           (FLAG_ITEM_ROUTE_104_POTION + 1) // Unused Flag
-#define FLAG_ITEM_ROUTE_103_PP_UP                                   (FLAG_UNUSED_0x470 + 1)
-#define FLAG_UNUSED_0x472                                           (FLAG_ITEM_ROUTE_103_PP_UP + 1) // Unused Flag
-#define FLAG_ITEM_ROUTE_108_STAR_PIECE                              (FLAG_UNUSED_0x472 + 1)
+#define FLAG_ITEM_ROUTE_103_PP_UP                                   (FLAG_ITEM_ROUTE_104_POTION + 1)
+#define FLAG_ITEM_ROUTE_108_STAR_PIECE                              (FLAG_ITEM_ROUTE_103_PP_UP + 1)
 #define FLAG_ITEM_ROUTE_109_POTION                                  (FLAG_ITEM_ROUTE_108_STAR_PIECE + 1)
 #define FLAG_ITEM_ROUTE_110_ELIXIR                                  (FLAG_ITEM_ROUTE_109_POTION + 1)
 #define FLAG_ITEM_ROUTE_111_ELIXIR                                  (FLAG_ITEM_ROUTE_110_ELIXIR + 1)
 #define FLAG_ITEM_ROUTE_113_HYPER_POTION                            (FLAG_ITEM_ROUTE_111_ELIXIR + 1)
 #define FLAG_ITEM_ROUTE_115_HEAL_POWDER                             (FLAG_ITEM_ROUTE_113_HYPER_POTION + 1)
-#define FLAG_UNUSED_0x479                                           (FLAG_ITEM_ROUTE_115_HEAL_POWDER + 1) // Unused Flag
-#define FLAG_ITEM_ROUTE_116_POTION                                  (FLAG_UNUSED_0x479 + 1)
+#define FLAG_ITEM_ROUTE_116_POTION                                  (FLAG_ITEM_ROUTE_115_HEAL_POWDER + 1)
 #define FLAG_ITEM_ROUTE_119_ELIXIR_2                                (FLAG_ITEM_ROUTE_116_POTION + 1)
 #define FLAG_ITEM_ROUTE_120_REVIVE                                  (FLAG_ITEM_ROUTE_119_ELIXIR_2 + 1)
 #define FLAG_ITEM_ROUTE_121_REVIVE                                  (FLAG_ITEM_ROUTE_120_REVIVE + 1)
