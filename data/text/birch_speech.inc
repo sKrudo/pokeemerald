@@ -113,8 +113,8 @@ gText_Pie_ChallengeMode::
 	.string "Challenge Mode?$"
 
 gText_Pie_WhichDifficulty::
-	.string "Which difficulty would you like to\n"
-	.string "play on?$"
+	.string "If you need help, check the existing\n"
+    .string "documentation for each choice.$"
 
 gText_Pie_Documents::
 	.string "Great! If you want more information,\n"

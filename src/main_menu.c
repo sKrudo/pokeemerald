@@ -1843,6 +1843,8 @@ static void Task_NewGameBirchSpeech_ChooseDifficulty(u8 taskId) {
         case NUZLOCKE_ACCEPT:
             gTasks[taskId].tYesNoType = 2;
             gTasks[taskId].func = Task_NewGameBirchSpeech_CreateNameYesNo;
+            Task_DestroyMultichoiceInput(gTasks[taskId].data[15]);
+
             break;
         case NUZLOCKE_WHITEOUT:
             mgba_printf(MGBA_LOG_DEBUG, "WHITEOUT PULSED");
