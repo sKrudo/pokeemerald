@@ -1614,8 +1614,8 @@ static void Task_NewGameBirchSpeech_CreateNameYesNo(u8 taskId) {
 }
 
 static void ResetSetNuzlockeFlags() {
-    gSaveBlock1Ptr->nuzlockeWhiteOutIsEndGame = 0;
-    gSaveBlock1Ptr->nuzlockeDupeClause = 0;
+    gSaveBlock2Ptr->nuzlockeWhiteOutIsEndGame = 0;
+    gSaveBlock2Ptr->nuzlockeDupeClause = 0;
 }
 
 static void Task_NewGameBirchSpeech_ProcessNameYesNoMenu(u8 taskId) {
@@ -1794,6 +1794,7 @@ static void Task_NewGameBirchSpeech_FadePlayerToWhite(u8 taskId) {
 
 static void Task_NewGameBirchSpeech_Cleanup(u8 taskId) {
     if (!gPaletteFade.active) {
+        mgba_printf(MGBA_LOG_DEBUG, "BEFORE new game loaded, whiteout = %d", gSaveBlock2Ptr->nuzlockeWhiteOutIsEndGame);
         FreeAllWindowBuffers();
         FreeAndDestroyMonPicSprite(gTasks[taskId].tLotadSpriteId);
         ResetAllPicSprites();
@@ -1839,16 +1840,20 @@ static void Task_NewGameBirchSpeech_ChooseDifficulty(u8 taskId) {
     if (!JOY_NEW(A_BUTTON))
         return;
     switch (input) {
+        case NUZLOCKE_ACCEPT:
+            gTasks[taskId].tYesNoType = 2;
+            gTasks[taskId].func = Task_NewGameBirchSpeech_CreateNameYesNo;
+            break;
         case NUZLOCKE_WHITEOUT:
             mgba_printf(MGBA_LOG_DEBUG, "WHITEOUT PULSED");
-            gSaveBlock1Ptr->nuzlockeWhiteOutIsEndGame = SwitchBool(gSaveBlock1Ptr->nuzlockeWhiteOutIsEndGame);
+            gSaveBlock2Ptr->nuzlockeWhiteOutIsEndGame = SwitchBool(gSaveBlock2Ptr->nuzlockeWhiteOutIsEndGame);
             Task_DestroyMultichoiceInput(gTasks[taskId].data[15]);
             NewGameBirchSpeech_ShowDifficultyMenu(taskId);
 
             break;
         case NUZLOCKE_DUPECLAUSE:
             mgba_printf(MGBA_LOG_DEBUG, "DUPE PULSED");
-            gSaveBlock1Ptr->nuzlockeDupeClause = SwitchBool(gSaveBlock1Ptr->nuzlockeDupeClause);
+            gSaveBlock2Ptr->nuzlockeDupeClause = SwitchBool(gSaveBlock2Ptr->nuzlockeDupeClause);
 
             Task_DestroyMultichoiceInput(gTasks[taskId].data[15]);
             NewGameBirchSpeech_ShowDifficultyMenu(taskId);
@@ -2212,10 +2217,10 @@ static const struct ScrollingListMenuNotConst sScrollingSets =
 u8 GetNuzlockeFlag(u8 flag) {
     switch (flag) {
         case NUZLOCKE_WHITEOUT:
-            mgba_printf(MGBA_LOG_DEBUG, "Getting NUZLOCKE_WHITEOUT %d", gSaveBlock1Ptr->nuzlockeWhiteOutIsEndGame);
-            return gSaveBlock1Ptr->nuzlockeWhiteOutIsEndGame;
+            mgba_printf(MGBA_LOG_DEBUG, "Getting NUZLOCKE_WHITEOUT %d", gSaveBlock2Ptr->nuzlockeWhiteOutIsEndGame);
+            return gSaveBlock2Ptr->nuzlockeWhiteOutIsEndGame;
         case NUZLOCKE_DUPECLAUSE:
-            return gSaveBlock1Ptr->nuzlockeDupeClause;
+            return gSaveBlock2Ptr->nuzlockeDupeClause;
         default:
             return 0;
     }

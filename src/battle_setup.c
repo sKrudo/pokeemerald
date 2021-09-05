@@ -47,6 +47,9 @@
 #include "constants/trainers.h"
 #include "constants/trainer_hill.h"
 #include "pokemon_storage_system.h"
+#include "save.h"
+#include "printf.h"
+#include "mgba.h"
 
 enum {
     TRAINER_PARAM_LOAD_VAL_8BIT,
@@ -1311,6 +1314,23 @@ void BattleSetup_StartTrainerBattle(void) {
     ScriptContext1_Stop();
 }
 
+static void Nuzlocke_CheckDeadPokemon() {
+    u32 species, died;
+    int i;
+    for (i = 0; i < PARTY_SIZE; i++) {
+        species = GetMonData(&gPlayerParty[i], MON_DATA_SPECIES2);
+        if (species != SPECIES_EGG && species != SPECIES_NONE) {
+            if (GetMonData(&gPlayerParty[i], MON_DATA_HP) <= 0) { // bro is dead
+                SetMonData(&gPlayerParty[i], MON_DATA_DIED, &died);
+                SendMonToPC(&gPlayerParty[i]);
+                ZeroMonData(&gPlayerParty[i]);
+            }
+        }
+    }
+    CompactPartySlots();
+    CalculatePlayerPartyCount();
+}
+
 static void CB2_EndTrainerBattle(void) {
     u32 level, died, species;
     int i;
@@ -1323,33 +1343,30 @@ static void CB2_EndTrainerBattle(void) {
         if (InBattlePyramid() || InTrainerHillChallenge())
             SetMainCallback2(CB2_ReturnToFieldContinueScriptPlayMapMusic);
         else {
-            for (i = 0; i < PARTY_SIZE; i++) {
-                species = GetMonData(&gPlayerParty[i], MON_DATA_SPECIES2);
-                if (species != SPECIES_EGG && species != SPECIES_NONE) {
-                    if (GetMonData(&gPlayerParty[i], MON_DATA_HP) <= 0) { // bro is dead
-                        SetMonData(&gPlayerParty[i], MON_DATA_DIED, &died);
-                        SendMonToPC(&gPlayerParty[i]);
-                        ZeroMonData(&gPlayerParty[i]);
-                    }
-                }
+//            for (i = 0; i < PARTY_SIZE; i++) {
+//                species = GetMonData(&gPlayerParty[i], MON_DATA_SPECIES2);
+//                if (species != SPECIES_EGG && species != SPECIES_NONE) {
+//                    if (GetMonData(&gPlayerParty[i], MON_DATA_HP) <= 0) { // bro is dead
+//                        SetMonData(&gPlayerParty[i], MON_DATA_DIED, &died);
+//                        SendMonToPC(&gPlayerParty[i]);
+//                        ZeroMonData(&gPlayerParty[i]);
+//                    }
+//                }
+//            }
+//            CompactPartySlots();
+//            CalculatePlayerPartyCount();
+            mgba_printf(MGBA_LOG_DEBUG, "Whiteout, is whiteout clause active? %d",
+                        gSaveBlock2Ptr->nuzlockeWhiteOutIsEndGame);
+            if (gSaveBlock2Ptr->nuzlockeWhiteOutIsEndGame == 1) {
+                ClearSaveData();
+                DoSoftReset();
+            } else {
+                Nuzlocke_CheckDeadPokemon();
+                SetMainCallback2(CB2_WhiteOut);
             }
-            CompactPartySlots();
-            CalculatePlayerPartyCount();
-            SetMainCallback2(CB2_WhiteOut);
         }
     } else {
-        for (i = 0; i < PARTY_SIZE; i++) {
-            species = GetMonData(&gPlayerParty[i], MON_DATA_SPECIES2);
-            if (species != SPECIES_EGG && species != SPECIES_NONE) {
-                if (GetMonData(&gPlayerParty[i], MON_DATA_HP) <= 0) { // bro is dead
-                    SetMonData(&gPlayerParty[i], MON_DATA_DIED, &died);
-                    SendMonToPC(&gPlayerParty[i]);
-                    ZeroMonData(&gPlayerParty[i]);
-                }
-            }
-        }
-        CompactPartySlots();
-        CalculatePlayerPartyCount();
+        Nuzlocke_CheckDeadPokemon();
         SetMainCallback2(CB2_ReturnToFieldContinueScriptPlayMapMusic);
         if (!InBattlePyramid() && !InTrainerHillChallenge()) {
             RegisterTrainerInMatchCall();

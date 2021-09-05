@@ -493,6 +493,11 @@ struct SaveBlock2
     /*0x57C*/ struct RankingHall2P hallRecords2P[2][3]; // From record mixing.
     /*0x624*/ u16 contestLinkResults[CONTEST_CATEGORIES_COUNT][CONTESTANT_COUNT];
     /*0x64C*/ struct BattleFrontier frontier;
+    /*0x3D76*/ u8 nuzlockeWhiteOutIsEndGame:1;
+    /*0x3D76*/ u8 nuzlockeDupeClause:1;
+    /*0x3D76*/ u8 filler:6;
+
+
 }; // sizeof=0xF2C
 
 extern struct SaveBlock2 *gSaveBlock2Ptr;
@@ -1044,10 +1049,7 @@ struct SaveBlock1
     /*0x3D5A*/ u8 filler3D5A[0xA];
     /*0x3D64*/ struct SaveTrainerHill trainerHill;
     /*0x3D70*/ struct WaldaPhrase waldaPhrase;
-    /*0x3D76*/ u8 nuzlockeWhiteOutIsEndGame:1;
-    /*0x3D76*/ u8 nuzlockeDupeClause:1;
-
-    /*0x3D77*/ u8 unused:7;
+    /*0x3D76*/ u8 unused;
     // sizeof: 0x3D88
 };
 
