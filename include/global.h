@@ -1044,7 +1044,9 @@ struct SaveBlock1
     /*0x3D5A*/ u8 filler3D5A[0xA];
     /*0x3D64*/ struct SaveTrainerHill trainerHill;
     /*0x3D70*/ struct WaldaPhrase waldaPhrase;
-    /*0x3D76*/ u8 whiteOutIsEndGame:1;
+    /*0x3D76*/ u8 nuzlockeWhiteOutIsEndGame:1;
+    /*0x3D76*/ u8 nuzlockeDupeClause:1;
+
     /*0x3D77*/ u8 unused:7;
     // sizeof: 0x3D88
 };

@@ -249,7 +249,7 @@ static void Task_NewGameBirchSpeech_WaitToShowDifficultyMenu(u8);
 
 static void Task_NewGameBirchSpeech_ChooseDifficulty(u8);
 
-static void NewGameBirchSpeech_ShowDifficultyMenu(void);
+static void NewGameBirchSpeech_ShowDifficultyMenu(u8 taskId);
 
 static void Task_NewGameBirchSpeech_DifficultyDesc(u8 taskId);
 
@@ -1613,7 +1613,13 @@ static void Task_NewGameBirchSpeech_CreateNameYesNo(u8 taskId) {
     }
 }
 
+static void ResetSetNuzlockeFlags() {
+    gSaveBlock1Ptr->nuzlockeWhiteOutIsEndGame = 0;
+    gSaveBlock1Ptr->nuzlockeDupeClause = 0;
+}
+
 static void Task_NewGameBirchSpeech_ProcessNameYesNoMenu(u8 taskId) {
+
     switch (Menu_ProcessInputNoWrapClearOnChoose()) {
         case 0:
             PlaySE(SE_SELECT);
@@ -1635,6 +1641,7 @@ static void Task_NewGameBirchSpeech_ProcessNameYesNoMenu(u8 taskId) {
                 NewGameBirchSpeech_ClearWindow(0);
                 StringExpandPlaceholders(gStringVar4, gText_Pie_WhichDifficulty);
                 AddTextPrinterForMessage(1);
+                ResetSetNuzlockeFlags();
                 gTasks[taskId].func = Task_NewGameBirchSpeech_WaitToShowDifficultyMenu;
             }
     }
@@ -1804,34 +1811,51 @@ static void Task_NewGameBirchSpeech_HackIntro(u8 taskId) {
         StringExpandPlaceholders(gStringVar4, gText_Pie_Welcome);
         AddTextPrinterForMessage(1);
         gTasks[taskId].func = Task_NewGameBirchSpeech_WaitToShowDifficultyMenu;
+
     }
 }
 
 static void Task_NewGameBirchSpeech_WaitToShowDifficultyMenu(u8 taskId) {
     if (!RunTextPrintersAndIsPrinter0Active()) {
         gSprites[gTasks[taskId].tPlayerSpriteId].invisible = TRUE;
-        NewGameBirchSpeech_ShowDifficultyMenu();
+        NewGameBirchSpeech_ShowDifficultyMenu(taskId);
         gTasks[taskId].func = Task_NewGameBirchSpeech_ChooseDifficulty;
     }
 }
 
+static u8 SwitchBool(u8 bool) {
+    if (bool == 1)
+        return 0;
+    return 1;
+}
+
 static void Task_NewGameBirchSpeech_ChooseDifficulty(u8 taskId) {
 //    int difficulty = NewGameBirchSpeech_ProcessDifficultyMenuInput();
-//    if (!JOY_NEW(A_BUTTON))
-//        return;
-//    switch (gSpecialVar_Result) {
-//        case NUZLOCKE_WHITEOUT:
-//            mgba_printf(MGBA_LOG_DEBUG, "WHITEOUT PULSED");
-//            NewGameBirchSpeech_ShowDifficultyMenu();
-//
-//            break;
-//        case NUZLOCKE_DUPECLAUSE:
-//            mgba_printf(MGBA_LOG_DEBUG, "DUPE PULSED");
-//            NewGameBirchSpeech_ShowDifficultyMenu();
-//            break;
-//        default:
-//            break;
-//    }
+    s32 input;
+    u8 task;
+    task = gTasks[taskId].data[15];
+    mgba_printf(MGBA_LOG_DEBUG, "main_menu A found, creating a new window %d", gSpecialVar_Result);
+    input = ListMenu_ProcessInput(gTasks[task].data[0]);
+    if (!JOY_NEW(A_BUTTON))
+        return;
+    switch (input) {
+        case NUZLOCKE_WHITEOUT:
+            mgba_printf(MGBA_LOG_DEBUG, "WHITEOUT PULSED");
+            gSaveBlock1Ptr->nuzlockeWhiteOutIsEndGame = SwitchBool(gSaveBlock1Ptr->nuzlockeWhiteOutIsEndGame);
+            Task_DestroyMultichoiceInput(gTasks[taskId].data[15]);
+            NewGameBirchSpeech_ShowDifficultyMenu(taskId);
+
+            break;
+        case NUZLOCKE_DUPECLAUSE:
+            mgba_printf(MGBA_LOG_DEBUG, "DUPE PULSED");
+            gSaveBlock1Ptr->nuzlockeDupeClause = SwitchBool(gSaveBlock1Ptr->nuzlockeDupeClause);
+
+            Task_DestroyMultichoiceInput(gTasks[taskId].data[15]);
+            NewGameBirchSpeech_ShowDifficultyMenu(taskId);
+            break;
+        default:
+            break;
+    }
 
 //    switch (difficulty) {
 //        case 0:
@@ -2188,9 +2212,10 @@ static const struct ScrollingListMenuNotConst sScrollingSets =
 u8 GetNuzlockeFlag(u8 flag) {
     switch (flag) {
         case NUZLOCKE_WHITEOUT:
-            return 1;
+            mgba_printf(MGBA_LOG_DEBUG, "Getting NUZLOCKE_WHITEOUT %d", gSaveBlock1Ptr->nuzlockeWhiteOutIsEndGame);
+            return gSaveBlock1Ptr->nuzlockeWhiteOutIsEndGame;
         case NUZLOCKE_DUPECLAUSE:
-            return 0;
+            return gSaveBlock1Ptr->nuzlockeDupeClause;
         default:
             return 0;
     }
@@ -2203,9 +2228,10 @@ const struct ListMenuItem *GetNewList(const struct ScrollingListMenuNotConst *cu
 
     for (i = 0; i < arrSize; i++) {
         ret[i] = (struct ListMenuItemNot) {malloc(sizeof(u8) * 40), i};
-        if (GetNuzlockeFlag(i) == 1)
+        if (GetNuzlockeFlag(i) == 1) {
+            mgba_printf(MGBA_LOG_DEBUG, "Should be putting active in ID = %d", i);
             DynamicPlaceholderTextUtil_SetPlaceholderPtr(0, gText_BirchOptionsActive);
-        else
+        } else
             DynamicPlaceholderTextUtil_SetPlaceholderPtr(0, gText_BirchOptionsNotActive);
 
         DynamicPlaceholderTextUtil_ExpandPlaceholders(ret[i].name,
@@ -2225,8 +2251,9 @@ GetNewStruct(const struct ScrollingListMenuNotConst *currentList, int arrSize) {
     return ret;
 }
 
-static void NewGameBirchSpeech_ShowDifficultyMenu(void) {
-    u8 windowId;
+//TODO: Specify row instead of void parameter
+static void NewGameBirchSpeech_ShowDifficultyMenu(u8 taskId) {
+    u8 windowId, newTaskId;
 //    u8 *str;
 //    u8 **names;
     int i;
@@ -2248,8 +2275,9 @@ static void NewGameBirchSpeech_ShowDifficultyMenu(void) {
 //    names[0] = sText_Example7;
     mgba_printf(MGBA_LOG_DEBUG, "After names, before scrolling");
 
-    ScriptMenu_ScrollingMultichoice(
-            GetNewStruct(&sScrollingSets, NUZLOCKE_LAST));
+    newTaskId = ScriptMenu_ScrollingMultichoice(
+            GetNewStruct(&sScrollingSets, NUZLOCKE_LAST), 0);
+    gTasks[taskId].data[15] = newTaskId;
     mgba_printf(MGBA_LOG_DEBUG, "haha no");
 
 //    for (i = NUZLOCKE_WHITEOUT; i < NUZLOCKE_LAST; i++){

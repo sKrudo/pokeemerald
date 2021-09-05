@@ -1390,7 +1390,7 @@ static const struct ListMenuTemplate sMultichoiceListTemplate =
 // 0x8006 = window y
 // 0x8007 = showed at once
 // 0x8008 = Allow B press
-void ScriptMenu_ScrollingMultichoice(struct ScrollingListMenu *menu) {
+u8 ScriptMenu_ScrollingMultichoice(struct ScrollingListMenu *menu, u16 selectedRow) {
     int i, windowId, taskId, width = 0;
     int setId = gSpecialVar_0x8004;
     int left = gSpecialVar_0x8005;
@@ -1413,51 +1413,76 @@ void ScriptMenu_ScrollingMultichoice(struct ScrollingListMenu *menu) {
     gMultiuseListMenuTemplate.totalItems = menu[setId].count;
     gMultiuseListMenuTemplate.maxShowed = maxShowed;
     taskId = CreateTask(Task_ScrollingMultichoiceInput, 0);
-    gTasks[taskId].data[0] = ListMenuInit(&gMultiuseListMenuTemplate, 0, 0);
+    gTasks[taskId].data[0] = ListMenuInit(&gMultiuseListMenuTemplate, 0, selectedRow);
     gTasks[taskId].data[1] = gSpecialVar_0x8008;
     gTasks[taskId].data[2] = windowId;
+    return taskId;
+}
+
+
+void Task_DestroyMultichoiceInput(u8 taskId) {
+    DestroyListMenuTask(gTasks[taskId].data[0], NULL, NULL);
+    ClearStdWindowAndFrame(gTasks[taskId].data[2], TRUE);
+    RemoveWindow(gTasks[taskId].data[2]);
+    EnableBothScriptContexts();
+    DestroyTask(taskId);
+
 }
 
 static void Task_ScrollingMultichoiceInput(u8 taskId) {
-    bool32 done = FALSE;
-    s32 input = ListMenu_ProcessInput(gTasks[taskId].data[0]);
-
-    switch (input) {
-        case LIST_HEADER:
-        case LIST_NOTHING_CHOSEN:
-            break;
-        case LIST_CANCEL:
-            if (gTasks[taskId].data[1]) {
-                gSpecialVar_Result = 0x7F;
-                done = TRUE;
-            }
-            break;
-        case NUZLOCKE_WHITEOUT:
-            mgba_printf(MGBA_LOG_DEBUG, "WHITEOUT PULSED");
-//            NewGameBirchSpeech_ShowDifficultyMenu();
-
-            break;
-        case NUZLOCKE_DUPECLAUSE:
-            mgba_printf(MGBA_LOG_DEBUG, "DUPE PULSED");
-//            NewGameBirchSpeech_ShowDifficultyMenu();
-            break;
-        default:
-            mgba_printf(MGBA_LOG_DEBUG, "DONE PULSED");
-
-            gSpecialVar_Result = input;
-            done = TRUE;
-            break;
-    }
-    if (done) {
-        DestroyListMenuTask(gTasks[taskId]
-                                    .data[0], NULL, NULL);
-        ClearStdWindowAndFrame(gTasks[taskId]
-                                       .data[2], TRUE);
-        RemoveWindow(gTasks[taskId]
-                             .data[2]);
-
-        EnableBothScriptContexts();
-
-        DestroyTask(taskId);
-    }
+//    return;
+//    bool32 done = FALSE;
+//    s32 input = ListMenu_ProcessInput(gTasks[taskId].data[0]);
+//
+//    switch (input) {
+//        case LIST_HEADER:
+//        case LIST_NOTHING_CHOSEN:
+//            break;
+//        case LIST_CANCEL:
+//            if (gTasks[taskId].data[1]) {
+//                gSpecialVar_Result = 0x7F;
+//                done = TRUE;
+//            }
+//            break;
+//        case NUZLOCKE_WHITEOUT:
+//            mgba_printf(MGBA_LOG_DEBUG, "WHITEOUT PULSED");
+//            gSpecialVar_Result = input;
+////            mgba_printf(MGBA_LOG_DEBUG, "Previous value = %d", gSaveBlock1Ptr->nuzlockeWhiteOutIsEndGame);
+////            gSaveBlock1Ptr->nuzlockeWhiteOutIsEndGame = SwitchBool(gSaveBlock1Ptr->nuzlockeWhiteOutIsEndGame);
+////            mgba_printf(MGBA_LOG_DEBUG, "post value = %d", gSaveBlock1Ptr->nuzlockeWhiteOutIsEndGame);
+////            done = TRUE;
+////            if (gSaveBlock1Ptr->nuzlockeWhiteOutIsEndGame == 1)
+////                gSaveBlock1Ptr->nuzlockeWhiteOutIsEndGame = 0;
+////            else gSaveBlock1Ptr->nuzlockeWhiteOutIsEndGame = 1;
+////            DestroyListMenuTask(gTasks[taskId].data[0], NULL, NULL);
+////            ClearStdWindowAndFrame(gTasks[taskId].data[2], TRUE);
+////            RemoveWindow(gTasks[taskId].data[2]);
+////            gTasks[taskId].data[0] = ListMenuInit(&gMultiuseListMenuTemplate, 0, 0);
+//////            gTasks[taskId].data[1] = gSpecialVar_0x8008;
+//////            gTasks[taskId].data[2] = gTasks[taskId].data[2];
+//            break;
+//        case NUZLOCKE_DUPECLAUSE:
+//            gSpecialVar_Result = input;
+////            mgba_printf(MGBA_LOG_DEBUG, "DUPE PULSED");
+////            NewGameBirchSpeech_ShowDifficultyMenu();
+//            break;
+//        default:
+//            mgba_printf(MGBA_LOG_DEBUG, "DONE PULSED");
+//
+//            gSpecialVar_Result = input;
+//            done = TRUE;
+//            break;
+//    }
+////    if (done) {
+////        DestroyListMenuTask(gTasks[taskId]
+////                                    .data[0], NULL, NULL);
+////        ClearStdWindowAndFrame(gTasks[taskId]
+////                                       .data[2], TRUE);
+////        RemoveWindow(gTasks[taskId]
+////                             .data[2]);
+////
+////        EnableBothScriptContexts();
+////
+////        DestroyTask(taskId);
+////    }
 }

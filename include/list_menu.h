@@ -143,6 +143,6 @@ void RemoveScrollIndicatorArrowPair(u8 taskId);
 
 void Task_ScrollIndicatorArrowPairOnMainMenu(u8 taskId);
 
-void ScriptMenu_ScrollingMultichoice(struct ScrollingListMenu *menu);
-
+u8 ScriptMenu_ScrollingMultichoice(struct ScrollingListMenu *menu, u16 selectedRow);
+void Task_DestroyMultichoiceInput(u8 taskId);
 #endif //GUARD_LIST_MENU_H
