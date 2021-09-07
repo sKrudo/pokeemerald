@@ -4653,7 +4653,7 @@ static void ReturnFromBattleToOverworld(void) {
 #endif                                                                               // & with B_OUTCOME_WON (1) will return TRUE and deactivates the roamer.
             SetRoamerInactive();
     }
-    if (!(gBattleTypeFlags & BATTLE_TYPE_TRAINER)) {
+    if (!(gBattleTypeFlags & BATTLE_TYPE_TRAINER) && FlagGet(FLAG_RECEIVED_POKEDEX_FROM_BIRCH)) {
 //        if (FlagGet(FLAG_NUZLOCKE_CATCH) && FlagGet(FLAG_NUZLOCKE_CAN_CATCH))
         FlagSet(FLAGS_NUZLOCKE_ENCOUNTERS + GetCurrentRegionMapSectionId());
     }

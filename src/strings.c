@@ -241,7 +241,7 @@ const u8 gText_ThrewAwayVar2Var1s[] = _("Threw away {STR_VAR_2}\n{STR_VAR_1}(s).
 const u8 gText_ConfirmTossItems[] = _("Is it okay to\nthrow away {STR_VAR_2}\n{STR_VAR_1}(s)?");
 const u8 gText_DadsAdvice[] = _("DAD's advice…\n{PLAYER}, there's a time and place for\leverything!{PAUSE_UNTIL_PRESS}");
 const u8 gText_ReviveNuzlocke[] = _("Why would you use that? it's a nuzlocke!{PAUSE_UNTIL_PRESS}");
-const u8 gText_NuzlockeCantCatchRoute[] = _("You have already encountered a pokemon\n in this route!{PAUSE_UNTIL_PRESS}");
+const u8 gText_NuzlockeCantCatchRoute[] = _("You have already encountered a pokemon\nin this route!{PAUSE_UNTIL_PRESS}");
 
 const u8 gText_CantDismountBike[] = _("You can't dismount your BIKE here.{PAUSE_UNTIL_PRESS}");
 const u8 gText_ItemFinderNearby[] = _("Huh?\nThe ITEMFINDER's responding!\pThere's an item buried around here!{PAUSE_UNTIL_PRESS}");
