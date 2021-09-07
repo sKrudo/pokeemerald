@@ -1026,7 +1026,7 @@
 #define FLAG_DEFEATED_ELITE_4_PHOEBE                                (FLAG_DEFEATED_ELITE_4_SIDNEY + 1)
 #define FLAG_DEFEATED_ELITE_4_GLACIA                                (FLAG_DEFEATED_ELITE_4_PHOEBE + 1)
 #define FLAG_DEFEATED_ELITE_4_DRAKE                                 (FLAG_DEFEATED_ELITE_4_GLACIA + 1)
-
+#define FLAGS_NUZLOCKE_ENCOUNTERS                                   (FLAG_DEFEATED_ELITE_4_DRAKE + 1)
 // Trainer Flags
 // Trainer flags occupy 0x500 - 0x85F, the last 9 of which are unused
 // See constants/opponents.h. The values there + FLAG_TRAINER_FLAG_START are the flag IDs
